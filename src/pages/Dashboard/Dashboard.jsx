@@ -39,16 +39,11 @@ export const Dashboard = () => {
   };
  
 
-//   https://brunovcg.herokuapp.com/user/4/secrets =>> access secrets
-
-// https://brunovcg.herokuapp.com/hobbies =>> hobbies everyone
-
-// https://brunovcg.herokuapp.com/hobbies?usedId=4 =>> hobbies per user filter
 
   const getUserHobbies = () => {
     api()
     .get(`/hobbies`, hobbiesConfig)
-    .then((response) => {
+    .then((response) => {   
     setUsersHobbies(response.data);
     });
 
@@ -58,6 +53,10 @@ export const Dashboard = () => {
   useEffect(()=>{
     getUserHobbies()
   },[])
+
+  const userNoRepeat = () => {
+    return [...new Set(usersHobbies.map(it=> it.userName))]
+  }
 
 
 
@@ -81,9 +80,9 @@ export const Dashboard = () => {
             <h3>Hobbies</h3>
             <p className="describe">Which user you want to check? You can only add to yours</p>
             <select name="hobbies" id="hobbies" onChange={(evt)=> handleSelect(evt.target.value)}>
-                <option value="All" selected>All</option>
-                {usersHobbies.map((us, index)=>
-                    <option key={index} value={us.userName}>{us.userName}</option> 
+                <option value="All">All</option>
+                {userNoRepeat().map((us, index)=>
+                    <option key={index} value={us}>{us}</option> 
                 )}
             </select>
 

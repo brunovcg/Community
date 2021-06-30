@@ -111,8 +111,8 @@ export const Hobbies = ({selection, userHobbies}) => {
                 </p>
               </div>))
         : 
-        hobbies.filter(it=>it.userName===selection).map((sec) => (
-            <div className="hobbieCard">
+        hobbies.filter(it=>it.userName===selection).map((sec, index) => (
+            <div className="hobbieCard" key={index}>
               <p>
                 Hobbie: <span>{sec.name}</span>
               </p>
