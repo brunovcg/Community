@@ -50,7 +50,6 @@ export const Dashboard = () => {
     .get(`/hobbies`, hobbiesConfig)
     .then((response) => {
     setUsersHobbies(response.data);
-    console.log(response.data)
     });
 
 
@@ -82,11 +81,13 @@ export const Dashboard = () => {
             <h3>Hobbies</h3>
             <p className="describe">Which user you want to check? You can only add to yours</p>
             <select name="hobbies" id="hobbies" onChange={(evt)=> handleSelect(evt.target.value)}>
-                <option value="all">All</option>
-                <option value="saab">Saab</option>
+                <option value="All">All</option>
+                {usersHobbies.map(us=>
+                    <option value={us.userName}>{us.userName}</option> 
+                )}
             </select>
 
-            <Hobbies selection={selection}/>
+            <Hobbies selection={selection} usersHobbies={usersHobbies}/>
         </div>
         <div className="secretsBox">
             <h3>Secrets</h3>

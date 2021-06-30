@@ -7,7 +7,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 
-export const Hobbies = ({selection}) => {
+export const Hobbies = ({selection, userHobbies}) => {
 
     const token = JSON.parse(localStorage.getItem("@community/token"));
 
@@ -29,16 +29,22 @@ export const Hobbies = ({selection}) => {
     };
 
     const getHobbies = () => {
-        // api()
-        //   .get(`/user/${userId}/secrets`, secretsConfig)
-        //   .then((response) => {
-        //     setSecrets(response.data);
-        //   });
+
+        api()
+          .get(`/hobbies`, hobbiesConfig)
+          .then((response) => {
+            setHobbies(
+               
+                response.data 
+            );
+          });
+
       };
     
       useEffect(() => {
         getHobbies();
-      }, [hobbies]);
+      }, [hobbies, selection]);
+
 
       const formSchema = yup.object().shape({
         name: yup.string().required("write something!"),
@@ -55,14 +61,14 @@ export const Hobbies = ({selection}) => {
 
       const postHobbies = ({ name }) => {
         const user = { name, userId: userId, userName: userEmail };
-        // api()
-        //   .post(`/user/${userId}/secrets`, user)
-        //   .then((response) => {
-        //     alert(`Did IT!`);
-        //     reset();
-        //     handleAdd();
-        //   })
-        //   .catch((_) => alert("Something went wrong, try again!"));
+        api()
+          .post(`/hobbies`, user, hobbiesConfig)
+          .then((response) => {
+            alert(`Did IT!`);
+            reset();
+            handleAdd();
+          })
+          .catch((_) => alert("Something went wrong, try again!"));
       };
 
 
@@ -93,16 +99,28 @@ export const Hobbies = ({selection}) => {
           </form>
         </div>
       </div>
-      {hobbies.map((sec) => (
-        <div className="hobbieCard">
-          <p>
-            Hobbie: <span>{sec.name}</span>
-          </p>
-          <p>
-            User: <span>{sec.userName}</span>
-          </p>
-        </div>
-      ))}
+      { selection === "All" ?
+            
+            hobbies.map((sec) => (
+              <div className="hobbieCard">
+                <p>
+                  Hobbie: <span>{sec.name}</span>
+                </p>
+                <p>
+                  User: <span>{sec.userName}</span>
+                </p>
+              </div>))
+        : 
+        hobbies.filter(it=>it.userName===selection).map((sec) => (
+            <div className="hobbieCard">
+              <p>
+                Hobbie: <span>{sec.name}</span>
+              </p>
+              <p>
+                User: <span>{sec.userName}</span>
+              </p>
+            </div>))
+      }
     </Container>
   );
 };
