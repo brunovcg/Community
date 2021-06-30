@@ -7,72 +7,63 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 
-export const Hobbies = ({selection, userHobbies}) => {
+export const Hobbies = ({ selection }) => {
+  const token = JSON.parse(localStorage.getItem("@community/token"));
 
-    const token = JSON.parse(localStorage.getItem("@community/token"));
+  const { userId, userEmail } = useTokenInfo();
 
-    const { userId, userEmail } = useTokenInfo();
+  const [hobbies, setHobbies] = useState([]);
 
-    const [hobbies, setHobbies] = useState([]);
+  const [add, setAdd] = useState(false);
 
-    const [add, setAdd] = useState(false);
+  const hobbiesConfig = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  };
 
-    const hobbiesConfig = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-    };
+  const handleAdd = () => {
+    setAdd(!add);
+  };
 
-    const handleAdd = () => {
-        setAdd(!add);
-    };
+  const getHobbies = () => {
+    api()
+      .get(`/hobbies`, hobbiesConfig)
+      .then((response) => {
+        setHobbies(response.data);
+      });
+  };
 
-    const getHobbies = () => {
+  useEffect(() => {
+    getHobbies();
+  }, []);
 
-        api()
-          .get(`/hobbies`, hobbiesConfig)
-          .then((response) => {
-            setHobbies(
-               
-                response.data 
-            );
-          });
+  const formSchema = yup.object().shape({
+    name: yup.string().required("write something!"),
+  });
 
-      };
-    
-      useEffect(() => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({
+    resolver: yupResolver(formSchema),
+  });
+
+  const postHobbies = ({ name }) => {
+    const user = { name, userId: userId, userName: userEmail };
+    api()
+      .post(`/hobbies`, user, hobbiesConfig)
+      .then((response) => {
         getHobbies();
-      }, [hobbies, selection]);
-
-
-      const formSchema = yup.object().shape({
-        name: yup.string().required("write something!"),
-      });
-
-      const {
-        register,
-        handleSubmit,
-        formState: { errors },
-        reset,
-      } = useForm({
-        resolver: yupResolver(formSchema),
-      });
-
-      const postHobbies = ({ name }) => {
-        const user = { name, userId: userId, userName: userEmail };
-        api()
-          .post(`/hobbies`, user, hobbiesConfig)
-          .then((response) => {
-            alert(`Did IT!`);
-            reset();
-            handleAdd();
-          })
-          .catch((_) => alert("Something went wrong, try again!"));
-      };
-
-
-
+        alert(`Did IT!`);
+        reset();
+        handleAdd();
+      })
+      .catch((_) => alert("Something went wrong, try again!"));
+  };
 
   return (
     <Container>
@@ -99,19 +90,8 @@ export const Hobbies = ({selection, userHobbies}) => {
           </form>
         </div>
       </div>
-      { selection === "All" ?
-            
-            hobbies.map((sec, index) => (
-              <div className="hobbieCard" key={index}>
-                <p>
-                  Hobbie: <span>{sec.name}</span>
-                </p>
-                <p>
-                  User: <span>{sec.userName}</span>
-                </p>
-              </div>))
-        : 
-        hobbies.filter(it=>it.userName===selection).map((sec, index) => (
+      {selection === "All"
+        ? hobbies.map((sec, index) => (
             <div className="hobbieCard" key={index}>
               <p>
                 Hobbie: <span>{sec.name}</span>
@@ -119,8 +99,20 @@ export const Hobbies = ({selection, userHobbies}) => {
               <p>
                 User: <span>{sec.userName}</span>
               </p>
-            </div>))
-      }
+            </div>
+          ))
+        : hobbies
+            .filter((it) => it.userName === selection)
+            .map((sec, index) => (
+              <div className="hobbieCard" key={index}>
+                <p>
+                  Hobbie: <span>{sec.name}</span>
+                </p>
+                <p>
+                  User: <span>{sec.userName}</span>
+                </p>
+              </div>
+            ))}
     </Container>
   );
 };

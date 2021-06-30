@@ -35,7 +35,6 @@ export const Dashboard = () => {
   const handleSelect = (text) => {
     setSelection(text);
 
-    console.log(text);
   };
 
   const hobbiesConfig = {
@@ -65,7 +64,7 @@ export const Dashboard = () => {
     <Container>
       <header>
         <h1>Community - Dashboard</h1>
-        <h2>{`Welcome ${userEmail}`}</h2>
+        {/* <h2>{`Welcome ${userEmail}`}</h2> */}
         <div className="buttonBox">
           <Button
             click={handleLogout}

@@ -37,7 +37,7 @@ export const Secrets = () => {
 
   useEffect(() => {
     getSecrets();
-  }, [secrets]);
+  }, []);
 
   const formSchema = yup.object().shape({
     name: yup.string().required("write something!"),
@@ -57,6 +57,7 @@ export const Secrets = () => {
     api()
       .post(`/user/${userId}/secrets`, user)
       .then((response) => {
+        getSecrets();
         alert(`Did IT!`);
         reset();
         handleAdd();

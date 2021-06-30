@@ -25,6 +25,7 @@ export const Container = styled.div`
     }
 
     .buttonBox {
+      margin-top: 20px;
       height: 30%;
     }
   }
@@ -88,6 +89,10 @@ export const Container = styled.div`
         font-size: 1.5rem;
         height: 20%;
       }
+
+      .buttonBox {
+      margin-top: 8px;
+    }
     }
 
     main{
