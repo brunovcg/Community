@@ -101,8 +101,8 @@ export const Hobbies = ({selection, userHobbies}) => {
       </div>
       { selection === "All" ?
             
-            hobbies.map((sec) => (
-              <div className="hobbieCard">
+            hobbies.map((sec, index) => (
+              <div className="hobbieCard" key={index}>
                 <p>
                   Hobbie: <span>{sec.name}</span>
                 </p>

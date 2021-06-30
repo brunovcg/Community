@@ -14,7 +14,7 @@ export const Dashboard = () => {
 
   const history = useHistory();
 
-  const [selection, setSelection] = useState([])
+  const [selection, setSelection] = useState("All")
 
   const [usersHobbies, setUsersHobbies] = useState([])
 
@@ -81,9 +81,9 @@ export const Dashboard = () => {
             <h3>Hobbies</h3>
             <p className="describe">Which user you want to check? You can only add to yours</p>
             <select name="hobbies" id="hobbies" onChange={(evt)=> handleSelect(evt.target.value)}>
-                <option value="All">All</option>
-                {usersHobbies.map(us=>
-                    <option value={us.userName}>{us.userName}</option> 
+                <option value="All" selected>All</option>
+                {usersHobbies.map((us, index)=>
+                    <option key={index} value={us.userName}>{us.userName}</option> 
                 )}
             </select>
 
