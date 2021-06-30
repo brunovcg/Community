@@ -37,10 +37,10 @@ export const Container = styled.div`
     justify-content: center;
 
     .hobbiesBox {
-        width: 50%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+      width: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
 
       h3 {
         color: var(--green);
@@ -48,46 +48,57 @@ export const Container = styled.div`
         padding-top: 10px;
       }
 
-      .describe{
-        color: var(--maroon)
+      .describe {
+        color: var(--maroon);
       }
 
-      select{
+      select {
         width: 50%;
       }
     }
 
     .secretsBox {
-        width: 50%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+      width: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       h3 {
         color: var(--red);
         font-weight: bold;
         padding-top: 10px;
       }
 
-      .describe{
-        color: var(--maroon)
+      .describe {
+        color: var(--maroon);
       }
     }
-
-
-
   }
 
   @media (max-width: 500px) {
     header {
-      height: fit-content;
+      height: 50vh;
 
       h1 {
         font-size: 3rem;
+        margin-top: 30px;
+        height: 40%;
       }
 
       h2 {
         font-size: 1.5rem;
+        height: 20%;
       }
     }
+
+    main{
+      min-height: 50vh;
+
+      .hobbiesBox, .secretsBox{
+        width: 100%;
+      }
+    }
+    
+  
+
   }
 `;
