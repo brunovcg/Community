@@ -6,10 +6,14 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useHistory } from "react-router-dom";
 import { api } from "../../services/api";
 import { useWindowSize } from "../../providers/windowSize";
+import { useTokenInfo } from "../../providers/tokenInfo";
+
 
 export const Login = () => {
 
   const { windowWidth } = useWindowSize();
+
+  const {userId} = useTokenInfo()
 
   const formSchema = yup.object().shape({
     email: yup.string().email("Invalid E-mail").required("E-mail is required"),
@@ -20,6 +24,7 @@ export const Login = () => {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm({
     resolver: yupResolver(formSchema),
   });
@@ -31,18 +36,26 @@ export const Login = () => {
   };
 
   const addToken = (data) => {
+    localStorage.clear()
     localStorage.setItem('@community/token', JSON.stringify(data));
+  }
+
+  const addUserId = (data) => {
+
+    localStorage.setItem('@community/userId', JSON.stringify(data));    
   }
 
   const onSubmitFunction = ({ email, password }) => {
     const user = { email, password };
-    api
+    api()
       .post("/login/", user)
       .then((response) => {
-        addToken(response.data.access)
+        addToken(response.data.accessToken)
+        alert(`Welcome!`)
         handleHistory('/dashboard')
-        alert(`Welcome!`);
-        return history.push("/login");
+        reset()
+        addUserId(userId)
+        ;
       })
       .catch((_) => alert("Something went wrong, try again!"));
   };

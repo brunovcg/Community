@@ -3,7 +3,6 @@ import Button from "../button/Button";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useHistory } from "react-router-dom";
 import { api } from "../../services/api";
 import { useWindowSize } from "../../providers/windowSize";
 
@@ -40,28 +39,18 @@ const { windowWidth } = useWindowSize();
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm({
     resolver: yupResolver(formSchema),
   });
 
-  const history = useHistory();
-
   const onSubmitFunction = ({ name, email, password }) => {
  
-    let axiosConfig = {
-        headers: {
-            'Content-Type': 'application/json',
-            "Access-Control-Allow-Origin": 'https://brunovcg.herokuapp.com/register',
-            // 'Access-Control-Allow-Headers': '*'
-            // 'Access-Control-Max-Age': 86400
-        }
-      };
-
-    const user = { name, email, password };
-    console.log(user)
-    api
-      .post("/register", user, axiosConfig)
+        const user = { name, email, password };
+    api()
+      .post("/register", user)
       .then((_) => {
+        reset()
         alert(`Thank's for subscribing!`);
       })
       .catch((_) => alert("Something went wrong, try again!"));

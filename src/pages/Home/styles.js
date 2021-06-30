@@ -35,7 +35,7 @@ export const Container = styled.div`
 
       h1 {
         display: flex;
-        font-size: 7rem;
+        font-size: 10rem;
         align-items: center;
         margin-top: 20px;
       }
