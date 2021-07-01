@@ -14,7 +14,7 @@ export const Secrets = () => {
 
   const [secrets, setSecrets] = useState([]);
 
-  const [add, setAdd] = useState(false);
+  const [add, setAdd] = useState(true);
 
   const secretsConfig = {
     headers: {

@@ -1,6 +1,5 @@
 import Button from "../../components/button/Button";
 import { useHistory, Redirect } from "react-router-dom";
-import { useTokenInfo } from "../../providers/tokenInfo";
 import { Container } from "./styles";
 import { useState, useEffect } from "react";
 import { api } from "../../services/api";
@@ -14,13 +13,13 @@ export const Dashboard = () => {
 
   const [hidden, setHidden] = useState(true);
 
-  const {authenticated, setAuthenticated} = useAuth()
+  const { authenticated, setAuthenticated } = useAuth();
 
   const changeDisplay = () => {
     setHidden(!hidden);
   };
 
-  const { userEmail } = useTokenInfo();
+  const userEmail = JSON.parse(localStorage.getItem("@community/userEmail"));
 
   const token = JSON.parse(localStorage.getItem("@community/token"));
 
@@ -32,13 +31,12 @@ export const Dashboard = () => {
 
   const handleLogout = () => {
     localStorage.clear();
-    setAuthenticated(false)
+    setAuthenticated(false);
     return history.push("/");
   };
 
   const handleSelect = (text) => {
     setSelection(text);
-
   };
 
   const hobbiesConfig = {
@@ -64,15 +62,15 @@ export const Dashboard = () => {
     return [...new Set(usersHobbies.map((it) => it.userName))];
   };
 
-  if(!authenticated) {
-    return <Redirect to="/"/>
-}
+  if (!authenticated) {
+    return <Redirect to="/" />;
+  }
 
   return (
     <Container>
       <header>
         <h1>Community - Dashboard</h1>
-        {/* <h2>{`Welcome ${userEmail}`}</h2> */}
+        <h2>{`Welcome ${userEmail}`}</h2>
         <div className="buttonBox">
           <Button
             click={handleLogout}
@@ -100,29 +98,37 @@ export const Dashboard = () => {
       {windowWidth > 500 ? (
         <main>
           <div className="hobbiesBox">
-            <h3>Hobbies</h3>
-            <p className="describe">
-              Which user you want to check? You can only add to yours
-            </p>
-            <select
-              name="hobbies"
-              id="hobbies"
-              onChange={(evt) => handleSelect(evt.target.value)}
-            >
-              <option value="All">All</option>
-              {userNoRepeat().map((us, index) => (
-                <option key={index} value={us}>
-                  {us}
-                </option>
-              ))}
-            </select>
+            <div className="titles">
+              <h3>Hobbies</h3>
+              <p className="describe">
+                Which user you want to check? You can only add to yours
+              </p>
 
-            <Hobbies selection={selection} usersHobbies={usersHobbies} getUserHobbies={getUserHobbies}/>
+              <select
+                name="hobbies"
+                id="hobbies"
+                onChange={(evt) => handleSelect(evt.target.value)}
+              >
+                <option value="All">All</option>
+                {userNoRepeat().map((us, index) => (
+                  <option key={index} value={us}>
+                    {us}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <Hobbies
+              selection={selection}
+              usersHobbies={usersHobbies}
+              getUserHobbies={getUserHobbies}
+            />
           </div>
 
           <div className="secretsBox">
-            <h3>Secrets</h3>
-            <p className="describe">Only you can see your secrets</p>
+            <div className="titles">
+              <h3>Secrets</h3>
+              <p className="describe">Only you can see your secrets</p>
+            </div>
             <Secrets />
           </div>
         </main>
@@ -146,7 +152,11 @@ export const Dashboard = () => {
               ))}
             </select>
 
-            <Hobbies selection={selection} usersHobbies={usersHobbies} getUserHobbies={getUserHobbies}/>
+            <Hobbies
+              selection={selection}
+              usersHobbies={usersHobbies}
+              getUserHobbies={getUserHobbies}
+            />
           </div>
         </main>
       ) : (

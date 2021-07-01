@@ -52,7 +52,7 @@ export const Container = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    color: var(--red);
+    color: var(--green);
     font-weight: bold;
 
     span {

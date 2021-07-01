@@ -6,8 +6,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useHistory } from "react-router-dom";
 import { api } from "../../services/api";
 import { useWindowSize } from "../../providers/windowSize";
-import { useTokenInfo } from "../../providers/tokenInfo";
 import { useAuth } from "../../providers/authentication/Authentication";
+import jwt_decode from 'jwt-decode';
 
 
 export const Login = () => {
@@ -16,7 +16,6 @@ export const Login = () => {
 
   const {setAuthenticated} = useAuth()
 
-  const {userId, userEmail} = useTokenInfo()
 
   const formSchema = yup.object().shape({
     email: yup.string().email("Invalid E-mail").required("E-mail is required"),
@@ -38,30 +37,24 @@ export const Login = () => {
     return history.push(path);
   };
 
-  const addToken = (dataToken) => {
+  const addToken = (dataToken, dataUserId, dataUserEmail) => {
     localStorage.clear()
     localStorage.setItem('@community/token', JSON.stringify(dataToken));
-
-    
-  }
-
-  const addUserId = (data1, data2) => {
-
-    localStorage.setItem('@community/userId', JSON.stringify(data1));   
-    localStorage.setItem('@community/userEmail', JSON.stringify(data2));  
+    localStorage.setItem('@community/userId', JSON.stringify(dataUserId));   
+    localStorage.setItem('@community/userEmail', JSON.stringify(dataUserEmail));
 
   }
+
 
   const onSubmitFunction = ({ email, password }) => {
     const user = { email, password };
     api()
       .post("/login/", user)
       .then((response) => {
-        addToken(response.data.accessToken)
+        addToken(response.data.accessToken, jwt_decode(response.data.accessToken).sub, jwt_decode(response.data.accessToken).email)
         alert(`Welcome!`)
         handleHistory('/dashboard')
         reset()
-        addUserId(userId, userEmail)
         setAuthenticated(true)
         
       })

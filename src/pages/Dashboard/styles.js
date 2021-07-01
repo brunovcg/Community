@@ -20,12 +20,12 @@ export const Container = styled.div`
     }
 
     h2 {
-      font-size: 1.8rem;
+      font-size: 1.5rem;
       height: 30%;
     }
 
     .buttonBox {
-      margin-top: 20px;
+      margin-top: 5px;
       height: 30%;
     }
   }
@@ -43,18 +43,29 @@ export const Container = styled.div`
       flex-direction: column;
       align-items: center;
 
-      h3 {
-        color: var(--green);
-        font-weight: bold;
-        padding-top: 10px;
-      }
+      .titles {
+        height: 110px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: start;
+        h3 {
+          font-size: 1.5rem;
+          color: var(--green);
+          font-weight: bold;
+          padding-top: 10px;
+        }
 
-      .describe {
-        color: var(--maroon);
+        .describe {
+          color: var(--dark-green);
+          font-size: 0.7rem;
+          width: 60%;
+        }
       }
 
       select {
         width: 50%;
+        font-size: 0.7rem;
       }
     }
 
@@ -63,14 +74,25 @@ export const Container = styled.div`
       display: flex;
       flex-direction: column;
       align-items: center;
-      h3 {
-        color: var(--red);
-        font-weight: bold;
-        padding-top: 10px;
-      }
 
-      .describe {
-        color: var(--maroon);
+      .titles {
+        height: 110px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: start;
+        h3 {
+          font-size: 1.5rem;
+          color: var(--red);
+          font-weight: bold;
+          padding-top: 10px;
+        }
+
+        .describe {
+          color: var(--maroon);
+          font-size: 0.7rem;
+          width: 60%;
+        }
       }
     }
   }
@@ -91,19 +113,17 @@ export const Container = styled.div`
       }
 
       .buttonBox {
-      margin-top: 8px;
-    }
+        margin-top: 8px;
+      }
     }
 
-    main{
+    main {
       min-height: 50vh;
 
-      .hobbiesBox, .secretsBox{
+      .hobbiesBox,
+      .secretsBox {
         width: 100%;
       }
     }
-    
-  
-
   }
 `;

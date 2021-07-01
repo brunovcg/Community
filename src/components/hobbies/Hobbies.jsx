@@ -14,7 +14,7 @@ export const Hobbies = ({ selection, getUserHobbies }) => {
 
   const [hobbies, setHobbies] = useState([]);
 
-  const [add, setAdd] = useState(false);
+  const [add, setAdd] = useState(true);
 
   const hobbiesConfig = {
     headers: {
@@ -75,7 +75,7 @@ export const Hobbies = ({ selection, getUserHobbies }) => {
         <div className={add ? "hidden" : "add"}>
           <form onSubmit={handleSubmit(postHobbies)}>
             <input
-              placeholder="What's the secret?"
+              placeholder="Set a hobby!"
               {...register("name")}
               name="name"
             />
