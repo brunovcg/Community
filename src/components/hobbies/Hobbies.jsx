@@ -7,11 +7,11 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 
 export const Hobbies = ({ selection, getUserHobbies }) => {
-  const token = JSON.parse(localStorage.getItem("@community/token"));
+  const [token] = useState(JSON.parse(localStorage.getItem("@community/token")) || "");
 
-  const userId = JSON.parse(localStorage.getItem("@community/userId"));
+  const [userId] = useState(JSON.parse(localStorage.getItem("@community/userId")) || "");
 
-  const userEmail = JSON.parse(localStorage.getItem("@community/userEmail"));
+  const [userEmail] = useState(JSON.parse(localStorage.getItem("@community/userEmail")) || "");
 
   const [hobbies, setHobbies] = useState([]);
 
