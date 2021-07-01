@@ -42,7 +42,7 @@ export const Dashboard = () => {
   const hobbiesConfig = {
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+      "Authorization": `Bearer ${token}`,
     },
   };
 
@@ -51,20 +51,28 @@ export const Dashboard = () => {
       .get(`/hobbies`, hobbiesConfig)
       .then((response) => {
         setUsersHobbies(response.data);
-      });
+      })
+      .catch(res=>console.log(`Something went wrong! - ${res}`))
+      ;
   };
 
-  useEffect(() => {
-    getUserHobbies();
-  }, []);
+  
 
   const userNoRepeat = () => {
     return [...new Set(usersHobbies.map((it) => it.userName))];
   };
 
+  useEffect(() => {
+    
+    getUserHobbies();
+
+  }, []);
+
   if (!authenticated) {
     return <Redirect to="/" />;
   }
+
+  
 
   return (
     <Container>
