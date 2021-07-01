@@ -7,13 +7,16 @@ import { useHistory } from "react-router-dom";
 import { api } from "../../services/api";
 import { useWindowSize } from "../../providers/windowSize";
 import { useTokenInfo } from "../../providers/tokenInfo";
+import { useAuth } from "../../providers/authentication/Authentication";
 
 
 export const Login = () => {
 
   const { windowWidth } = useWindowSize();
 
-  const {userId} = useTokenInfo()
+  const {setAuthenticated} = useAuth()
+
+  const {userId, userEmail} = useTokenInfo()
 
   const formSchema = yup.object().shape({
     email: yup.string().email("Invalid E-mail").required("E-mail is required"),
@@ -35,14 +38,18 @@ export const Login = () => {
     return history.push(path);
   };
 
-  const addToken = (data) => {
+  const addToken = (dataToken) => {
     localStorage.clear()
-    localStorage.setItem('@community/token', JSON.stringify(data));
+    localStorage.setItem('@community/token', JSON.stringify(dataToken));
+
+    
   }
 
-  const addUserId = (data) => {
+  const addUserId = (data1, data2) => {
 
-    localStorage.setItem('@community/userId', JSON.stringify(data));    
+    localStorage.setItem('@community/userId', JSON.stringify(data1));   
+    localStorage.setItem('@community/userEmail', JSON.stringify(data2));  
+
   }
 
   const onSubmitFunction = ({ email, password }) => {
@@ -54,10 +61,15 @@ export const Login = () => {
         alert(`Welcome!`)
         handleHistory('/dashboard')
         reset()
-        addUserId(userId)
-        ;
+        addUserId(userId, userEmail)
+        setAuthenticated(true)
+        
       })
-      .catch((_) => alert("Something went wrong, try again!"));
+      .catch((_) => {
+        
+        alert("Something went wrong, try again!")
+        reset()
+      });
   };
 
   return (

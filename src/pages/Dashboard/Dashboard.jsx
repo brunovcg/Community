@@ -1,5 +1,5 @@
 import Button from "../../components/button/Button";
-import { useHistory } from "react-router-dom";
+import { useHistory, Redirect } from "react-router-dom";
 import { useTokenInfo } from "../../providers/tokenInfo";
 import { Container } from "./styles";
 import { useState, useEffect } from "react";
@@ -7,11 +7,14 @@ import { api } from "../../services/api";
 import { Secrets } from "../../components/secrets/Secrets";
 import { Hobbies } from "../../components/hobbies/Hobbies";
 import { useWindowSize } from "../../providers/windowSize";
+import { useAuth } from "../../providers/authentication/Authentication";
 
 export const Dashboard = () => {
   const { windowWidth } = useWindowSize();
 
   const [hidden, setHidden] = useState(true);
+
+  const {authenticated, setAuthenticated} = useAuth()
 
   const changeDisplay = () => {
     setHidden(!hidden);
@@ -29,6 +32,7 @@ export const Dashboard = () => {
 
   const handleLogout = () => {
     localStorage.clear();
+    setAuthenticated(false)
     return history.push("/");
   };
 
@@ -59,6 +63,10 @@ export const Dashboard = () => {
   const userNoRepeat = () => {
     return [...new Set(usersHobbies.map((it) => it.userName))];
   };
+
+  if(!authenticated) {
+    return <Redirect to="/"/>
+}
 
   return (
     <Container>

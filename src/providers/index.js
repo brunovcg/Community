@@ -1,14 +1,17 @@
 import { WindowSizeProvider } from "./windowSize";
 import { TokenInfoProvider } from "./tokenInfo";
+import { AuthProvider } from "./authentication/Authentication";
 
 const providers = ({ children }) => {
 
   return( 
-    <TokenInfoProvider>
-      <WindowSizeProvider>
-        {children}
-      </WindowSizeProvider>
-    </TokenInfoProvider>
+    <AuthProvider>
+      <TokenInfoProvider>
+        <WindowSizeProvider>
+          {children}
+        </WindowSizeProvider>
+      </TokenInfoProvider>
+    </AuthProvider>
     )
     
 };

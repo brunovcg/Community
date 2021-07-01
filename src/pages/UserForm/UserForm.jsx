@@ -5,15 +5,25 @@ import { useWindowSize } from "../../providers/windowSize";
 import Button from "../../components/button/Button";
 import { useState } from "react";
 import {Link} from 'react-router-dom'
+import { useAuth } from "../../providers/authentication/Authentication";
+import { Redirect } from "react-router-dom";
 
 export const UserForm = () => {
   const { windowWidth } = useWindowSize();
+
+  const {authenticated} = useAuth()
+
+  
 
   const [hidden, setHidden] = useState(true);
 
   const changeDisplay = () => {
     setHidden(!hidden);
   };
+
+  if(authenticated) {
+    return <Redirect to="/dashboard"/>
+}
 
   return (
     <Container
