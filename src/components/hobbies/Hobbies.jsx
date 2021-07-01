@@ -5,13 +5,22 @@ import Button from "../button/Button";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
+import { useAuth } from "../../providers/authentication/Authentication";
 
 export const Hobbies = ({ selection, getUserHobbies }) => {
-  const [token] = useState(JSON.parse(localStorage.getItem("@community/token")) || "");
+  const [token] = useState(
+    JSON.parse(localStorage.getItem("@community/token")) || ""
+  );
 
-  const [userId] = useState(JSON.parse(localStorage.getItem("@community/userId")) || "");
+  const [userId] = useState(
+    JSON.parse(localStorage.getItem("@community/userId")) || ""
+  );
 
-  const [userEmail] = useState(JSON.parse(localStorage.getItem("@community/userEmail")) || "");
+  const [userEmail] = useState(
+    JSON.parse(localStorage.getItem("@community/userEmail")) || ""
+  );
+
+  const { authenticated } = useAuth();
 
   const [hobbies, setHobbies] = useState([]);
 
@@ -20,7 +29,7 @@ export const Hobbies = ({ selection, getUserHobbies }) => {
   const hobbiesConfig = {
     headers: {
       "Content-Type": "application/json",
-      "Authorization": `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
   };
 
@@ -38,8 +47,10 @@ export const Hobbies = ({ selection, getUserHobbies }) => {
   };
 
   useEffect(() => {
-    getHobbies();
-  }, []);
+    if (authenticated) {
+      getHobbies();
+    }
+  }, [authenticated]);
 
   const formSchema = yup.object().shape({
     name: yup.string().required("write something!"),

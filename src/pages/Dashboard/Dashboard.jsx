@@ -64,9 +64,11 @@ export const Dashboard = () => {
 
   useEffect(() => {
     
-    getUserHobbies();
+    if (authenticated){
+    getUserHobbies()
+    }
 
-  }, []);
+  }, [authenticated]);
 
   if (!authenticated) {
     return <Redirect to="/" />;

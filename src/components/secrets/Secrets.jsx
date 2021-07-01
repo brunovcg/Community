@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { api } from "../../services/api";
-import { useTokenInfo } from "../../providers/tokenInfo";
+import { useAuth } from "../../providers/authentication/Authentication";
 import { Container } from "./styles";
 import Button from "../button/Button";
 import * as yup from "yup";
@@ -8,11 +8,19 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 
 export const Secrets = () => {
-  const [token] = useState(JSON.parse(localStorage.getItem("@community/token")) || "");
+  const [token] = useState(
+    JSON.parse(localStorage.getItem("@community/token")) || ""
+  );
 
-  const [userId] = useState(JSON.parse(localStorage.getItem("@community/userId")) || "");
+  const [userId] = useState(
+    JSON.parse(localStorage.getItem("@community/userId")) || ""
+  );
 
-  const [userEmail] = useState(JSON.parse(localStorage.getItem("@community/userEmail")) || "");
+  const [userEmail] = useState(
+    JSON.parse(localStorage.getItem("@community/userEmail")) || ""
+  );
+
+  const { authenticated } = useAuth();
 
   const [secrets, setSecrets] = useState([]);
 
@@ -21,7 +29,7 @@ export const Secrets = () => {
   const secretsConfig = {
     headers: {
       "Content-Type": "application/json",
-      "Authorization": `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
   };
 
@@ -38,8 +46,10 @@ export const Secrets = () => {
   };
 
   useEffect(() => {
-    getSecrets();
-  }, []);
+    if (authenticated) {
+      getSecrets();
+    }
+  }, [authenticated]);
 
   const formSchema = yup.object().shape({
     name: yup.string().required("write something!"),
