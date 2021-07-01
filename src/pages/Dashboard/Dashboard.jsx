@@ -109,7 +109,7 @@ export const Dashboard = () => {
               ))}
             </select>
 
-            <Hobbies selection={selection} usersHobbies={usersHobbies} />
+            <Hobbies selection={selection} usersHobbies={usersHobbies} getUserHobbies={getUserHobbies}/>
           </div>
 
           <div className="secretsBox">
@@ -138,7 +138,7 @@ export const Dashboard = () => {
               ))}
             </select>
 
-            <Hobbies selection={selection} usersHobbies={usersHobbies} />
+            <Hobbies selection={selection} usersHobbies={usersHobbies} getUserHobbies={getUserHobbies}/>
           </div>
         </main>
       ) : (
