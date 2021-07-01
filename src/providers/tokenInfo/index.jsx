@@ -13,16 +13,25 @@ export const TokenInfoProvider = ({ children }) => {
         token? jwt_decode(token) : {}
     );
 
+    const [userId, setUserId] = useState(decodedToken.sub)
+
+
+    const [userEmail, setUserEmail] = useState(decodedToken.sub)
+
 
    useEffect(()=> {
-
-        if (token){setDecodedToken( jwt_decode(token))}      
+        if (token){
+          setDecodedToken( jwt_decode(token))}      
 
     }, [token])
 
-    const userId = decodedToken.sub
+    useEffect(()=>{
+      setUserId(decodedToken.sub)
+      setUserEmail(decodedToken.email)
 
-    const userEmail = decodedToken.email
+    },[decodedToken])
+
+    
 
   
   return (
