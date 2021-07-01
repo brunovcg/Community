@@ -21,7 +21,7 @@ export const Secrets = () => {
   const secretsConfig = {
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+      "Authorization": `Bearer ${token}`,
     },
   };
 
@@ -31,7 +31,7 @@ export const Secrets = () => {
 
   const getSecrets = () => {
     api()
-      .get(`/user/${userId}/secrets`, secretsConfig)
+      .get(`/user/${userId}/secrets/`, secretsConfig)
       .then((response) => {
         setSecrets(response.data);
       });

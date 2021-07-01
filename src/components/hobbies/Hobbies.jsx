@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { api } from "../../services/api";
-import { useTokenInfo } from "../../providers/tokenInfo";
 import { Container } from "./styles";
 import Button from "../button/Button";
 import * as yup from "yup";
@@ -21,7 +20,7 @@ export const Hobbies = ({ selection, getUserHobbies }) => {
   const hobbiesConfig = {
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+      "Authorization": `Bearer ${token}`,
     },
   };
 
@@ -31,7 +30,7 @@ export const Hobbies = ({ selection, getUserHobbies }) => {
 
   const getHobbies = () => {
     api()
-      .get(`/hobbies`, hobbiesConfig)
+      .get(`/hobbies/`, hobbiesConfig)
       .then((response) => {
         setHobbies(response.data);
         getUserHobbies();
