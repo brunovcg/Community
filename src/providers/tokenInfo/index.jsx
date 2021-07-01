@@ -10,7 +10,7 @@ export const TokenInfoProvider = ({ children }) => {
 
 
     const [decodedToken, setDecodedToken] = useState(
-        token? jwt_decode(token) : ""
+        token? jwt_decode(token) : {}
     );
 
 
