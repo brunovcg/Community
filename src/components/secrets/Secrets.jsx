@@ -10,7 +10,9 @@ import { useForm } from "react-hook-form";
 export const Secrets = () => {
   const token = JSON.parse(localStorage.getItem("@community/token"));
 
-  const { userId, userEmail } = useTokenInfo();
+  const userId = JSON.parse(localStorage.getItem("@community/userId"));
+
+  const userEmail = JSON.parse(localStorage.getItem("@community/userEmail"));
 
   const [secrets, setSecrets] = useState([]);
 
